@@ -6,8 +6,6 @@ import DetailProduct from '../view/detail-product/detail-product'
 const UserProduct = ({product}: {product: ProductType}) => {
 
     const router = useRouter()
-    console.log(router)
-
     const {query} = router
     // const {data, error, isLoading} = useSWR(`/api/product/${query.id}`, fetcher)
 
@@ -27,42 +25,43 @@ const UserProduct = ({product}: {product: ProductType}) => {
 
 export default UserProduct
 
-// export async function getServerSideProps({params}: {params: {id: string}}) {
+export async function getServerSideProps({params}: {params: {id: string}}) {
 
-//   const res = await fetch(`http://localhost:3000/api/product/${params.id}`)
-//   const respons = await res.json()
-
-
-//   return {
-//     props: {
-//       product: respons.data
-//     }
-//   }
-// }
-
-
-  //static side generation
-  export async function getStaticPaths() {
-    const res = await fetch("http://localhost:3000/api/product")
-    const respons =  await res.json()
-
-    const paths = respons.data.map((product: ProductType) => ({
-      params: {
-        id: product.id
-      }
-    }))
-
-    return {paths, fallback: false}
-  }
-
-  //static side generation
-export async function getStaticProps({params}: {params: {id: string}}) {
-  //fetch data
-  const res = await fetch(`http://localhost:3000/api/product/${params.id}`)
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/product/${params.id}`)
   const respons = await res.json()
+
+
   return {
     props: {
       product: respons.data
     }
-  } 
+  }
 }
+
+
+  //static side generation
+  // export async function getStaticPaths() {
+  //   const res = await fetch("http://localhost:3000/api/product")
+  //   const respons =  await res.json()
+
+  //   const paths = respons.data.map((product: ProductType) => ({
+  //     params: {
+  //       id: product.id
+  //     }
+  //   }))
+
+  //   return {paths, fallback: false}
+  // }
+
+
+  //static side generation
+// export async function getStaticProps({params}: {params: {id: string}}) {
+//   //fetch data
+//   const res = await fetch(`http://localhost:3000/api/product/${params.id}`)
+//   const respons = await res.json()
+//   return {
+//     props: {
+//       product: respons.data
+//     }
+//   } 
+// }
